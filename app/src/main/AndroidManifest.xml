@@ -13,8 +13,11 @@
         android:theme="@style/Theme.Ruhan_2207088_Hospital_Management_System">
         <activity android:name=".PatientLoginActivity"
             android:exported="false" />
-
+        <activity android:name=".DoctorLoginActivity"
+            android:exported="false" />
         <activity android:name=".PatientRegistrationActivity"
+            android:exported="false" />
+        <activity android:name=".PatientDashboardActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

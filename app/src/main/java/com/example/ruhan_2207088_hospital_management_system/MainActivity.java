@@ -19,6 +19,13 @@ import androidx.appcompat.app.AppCompatActivity;
                 startActivity(intent);
             });
 
+            findViewById(R.id.btnDoctor).setOnClickListener(v->{
+              Intent intent = new Intent( this , DoctorLoginActivity.class);
+              startActivity(intent);
+
+
+            });
+
 
         }
     }
