@@ -23,6 +23,8 @@
             android:exported="false" />
         <activity android:name=".AdminDashboardActivity"
             android:exported="false" />
+        <activity android:name=".AddDoctorActivity"
+            android:exported="false" />
 
 
         <activity android:name=".ViewPatientsActivity" />

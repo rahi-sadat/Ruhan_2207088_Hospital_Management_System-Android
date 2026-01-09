@@ -15,6 +15,10 @@ public class AdminDashboardActivity  extends AppCompatActivity {
             Intent intent = new Intent(AdminDashboardActivity.this, ViewPatientsActivity.class);
             startActivity(intent);
         });
+        findViewById(R.id.btnAddDoctor).setOnClickListener(v -> {
+            Intent intent = new Intent(AdminDashboardActivity.this, AddDoctorActivity.class);
+            startActivity(intent);
+        });
         findViewById(R.id.btnAdminLogout).setOnClickListener(v -> finish());
 
 
