@@ -12,6 +12,8 @@ public class AddDoctorActivity extends AppCompatActivity {
 
     private EditText etName, etPhone, etSpec, etEmail, etSchedule;
     private DatabaseReference mDatabase;
+    private boolean isEditMode = false;
+    private String existingDocId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +28,24 @@ public class AddDoctorActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.txtEmail);
         etSchedule = findViewById(R.id.txtSchedule);
 
-        findViewById(R.id.btnAddDoctor).setOnClickListener(v -> saveDoctor());
+
+        Button btnAdd = findViewById(R.id.btnAddDoctor);
+
+        if (getIntent().hasExtra("isEdit")) {
+            isEditMode = true;
+            existingDocId = getIntent().getStringExtra("doctorId");
+
+            etName.setText(getIntent().getStringExtra("name"));
+            etPhone.setText(getIntent().getStringExtra("phone"));
+            etSpec.setText(getIntent().getStringExtra("spec"));
+            etEmail.setText(getIntent().getStringExtra("email"));
+            etSchedule.setText(getIntent().getStringExtra("schedule"));
+
+
+            btnAdd.setText("Update Doctor Info");
+        }
+
+        btnAdd.setOnClickListener(v -> saveDoctor());
         findViewById(R.id.btnBackToDashboard).setOnClickListener(v -> finish());
     }
 
@@ -38,46 +57,50 @@ public class AddDoctorActivity extends AppCompatActivity {
         String schedule = etSchedule.getText().toString().trim();
 
         if (name.isEmpty() || phone.isEmpty() || spec.isEmpty()) {
-            Toast.makeText(this, "Please fill in Name, Phone, and Specialization", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (phone.length() < 3) {
-            Toast.makeText(this, "Phone number must be at least 3 digits", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Required fields missing!", Toast.LENGTH_SHORT).show();
             return;
         }
 
         try {
+            String doctorId;
 
-            String cleanName = name.replaceAll("[.#$\\[\\] ]", "");
-            String lastThree = phone.substring(phone.length() - 3);
-            String doctorId = cleanName + "_" + lastThree;
 
+            if (isEditMode) {
+                doctorId = existingDocId;
+            } else {
+                String cleanName = name.replaceAll("[.#$\\[\\] ]", "");
+                String lastThree = phone.length() >= 3 ? phone.substring(phone.length() - 3) : phone;
+                doctorId = cleanName + "_" + lastThree;
+            }
 
             Doctor doctorObj = new Doctor(doctorId, name, phone, spec, email, schedule);
 
-
             mDatabase.child(doctorId).setValue(doctorObj)
                     .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(AddDoctorActivity.this, "Doctor Added!", Toast.LENGTH_SHORT).show();
-                        clearFields();
+                        String msg = isEditMode ? "Doctor Updated!" : "Doctor Added!";
+                        Toast.makeText(AddDoctorActivity.this, msg, Toast.LENGTH_SHORT).show();
+
+                        if (isEditMode) {
+                            finish();
+                        } else {
+                            clearFields();
+                        }
                     })
                     .addOnFailureListener(e -> {
-                        Toast.makeText(AddDoctorActivity.this, "Firebase Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     });
 
         } catch (Exception e) {
             Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
+
     private void clearFields() {
         etName.setText("");
         etPhone.setText("");
         etSpec.setText("");
         etEmail.setText("");
         etSchedule.setText("");
-
-
+        etName.requestFocus();
     }
-    }
-
+}
