@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Doctor Login"
+            android:text="Admin Login"
             android:textSize="24sp"
             android:textStyle="bold"
             android:layout_marginBottom="30dp"
@@ -32,14 +32,14 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Doctor ID"
+                android:text="Admin ID"
                 android:textColor="#000000" />
 
             <EditText
-                android:id="@+id/txtDoctorId"
+                android:id="@+id/txtAdminId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Enter Doctor ID"
+                android:hint="Enter Admin ID"
                 android:inputType="text" />
         </LinearLayout>
 
@@ -57,18 +57,19 @@
                 android:textColor="#000000" />
 
             <EditText
-                android:id="@+id/txtDoctorPass"
+                android:id="@+id/txtAdminPass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Enter your password"
+                android:hint="Enter password"
                 android:inputType="textPassword" />
         </LinearLayout>
 
         <Button
-            android:id="@+id/btnDoctorLogin"
+            android:id="@+id/btnAdminLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Login" />
+            android:text="Login as Admin"
+            android:textColor="#FFFFFF" />
 
         <Button
             android:id="@+id/btnBack"
@@ -76,12 +77,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="← Back to Home"
-            />
+            android:text="← Back to Home" />
 
     </LinearLayout>
-
-    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

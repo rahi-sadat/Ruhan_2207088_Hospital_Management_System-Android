@@ -25,6 +25,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
             });
+            findViewById(R.id.btnAdmin).setOnClickListener(v->{
+                Intent intent = new Intent( this , AdminLoginActivity.class);
+                startActivity(intent);
+
+
+            });
 
 
         }
