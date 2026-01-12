@@ -73,7 +73,7 @@ public class AddDoctorActivity extends AppCompatActivity {
                 doctorId = cleanName + "_" + lastThree;
             }
 
-            Doctor doctorObj = new Doctor(doctorId, name, phone, spec, email, schedule);
+            Doctor doctorObj = new Doctor(doctorId, name, phone, spec, email, schedule,"doctor");
 
             mDatabase.child(doctorId).setValue(doctorObj)
                     .addOnSuccessListener(aVoid -> {

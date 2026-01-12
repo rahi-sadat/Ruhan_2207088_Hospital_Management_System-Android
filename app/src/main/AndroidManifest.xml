@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ruhan_2207088_Hospital_Management_System">
         <activity
+            android:name=".DoctorDashboard"
+            android:exported="false" />
+        <activity
             android:name=".ViewDoctorsActivity"
             android:exported="false" />
         <activity

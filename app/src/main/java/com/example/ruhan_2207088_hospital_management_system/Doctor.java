@@ -7,18 +7,19 @@ public class Doctor {
     public String specialization;
     public String email;
     public String schedule;
-
+     public String password;
 
     public Doctor() {
     }
 
 
-    public Doctor(String doctorId, String name, String phoneNumber, String specialization, String email, String schedule) {
+    public Doctor(String doctorId, String name, String phoneNumber, String specialization, String email, String schedule,String password) {
         this.doctorId = doctorId;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.specialization = specialization;
         this.email = email;
         this.schedule = schedule;
+        this.password = password;
     }
 }
