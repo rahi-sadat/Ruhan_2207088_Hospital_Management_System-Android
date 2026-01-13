@@ -1,6 +1,5 @@
 package com.example.ruhan_2207088_hospital_management_system;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -14,12 +13,18 @@ import com.google.android.material.navigation.NavigationView;
 public class PatientDashboardActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
+    private String loggedInId, loggedInName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.patient_dashboard);
 
+        // 1. Get Data from Intent (Keys matched with PatientLoginActivity)
+        loggedInId = getIntent().getStringExtra("p_id");
+        loggedInName = getIntent().getStringExtra("p_name");
+
+        // 2. Setup Toolbar
         Toolbar toolbar = findViewById(R.id.patient_toolbar);
         setSupportActionBar(toolbar);
 
@@ -35,16 +40,18 @@ public class PatientDashboardActivity extends AppCompatActivity {
 
         View headerView = navigationView.getHeaderView(0);
         TextView lblPatientName = headerView.findViewById(R.id.lblPatientName);
-        String name = getIntent().getStringExtra("patientName");
-        if (name != null) lblPatientName.setText("Welcome, " + name);
+        if (loggedInName != null) {
+            lblPatientName.setText("Welcome, " + loggedInName);
+        }
+
 
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
 
             if (id == R.id.nav_patient_profile) {
-
+                loadProfileFragment();
             } else if (id == R.id.nav_book_appointment) {
-
+                // Future Appointment Fragment logic
             } else if (id == R.id.nav_patient_logout) {
                 finish();
             }
@@ -52,5 +59,28 @@ public class PatientDashboardActivity extends AppCompatActivity {
             drawerLayout.closeDrawer(GravityCompat.START);
             return true;
         });
+
+
+        if (savedInstanceState == null) {
+            loadProfileFragment();
+            navigationView.setCheckedItem(R.id.nav_patient_profile);
+        }
+    }
+
+    private void loadProfileFragment() {
+
+        PatientProfileFragment fragment = new PatientProfileFragment();
+        Bundle args = new Bundle();
+        args.putString("patientId", loggedInId); // Fragment expects "patientId"
+        fragment.setArguments(args);
+
+        // Perform the swap
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.patient_content_area, fragment)
+                .commit();
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("My Profile");
+        }
     }
 }

@@ -38,6 +38,9 @@
         <activity
             android:name=".AddDoctorActivity"
             android:exported="false" />
+        <activity
+            android:name=".EditPatientProfileActivity"
+            android:exported="false" />
         <activity android:name=".ViewPatientsActivity" />
         <activity
             android:name=".MainActivity"
