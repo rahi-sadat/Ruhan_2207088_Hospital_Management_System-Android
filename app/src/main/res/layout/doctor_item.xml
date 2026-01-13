@@ -59,8 +59,23 @@
                 android:textColor="#2980B9"/>
         </LinearLayout>
 
-        <ImageButton android:id="@+id/btnEditDoctor" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone"/>
-        <ImageButton android:id="@+id/btnDeleteDoctor" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone"/>
+        <ImageButton
+            android:id="@+id/btnEditDoctor"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@android:drawable/ic_menu_edit"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:visibility="visible"
+            app:tint="#3498DB"/>
+
+        <ImageButton
+            android:id="@+id/btnDeleteDoctor"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@android:drawable/ic_menu_delete"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:visibility="visible"
+            app:tint="#E74C3C"/>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -1,9 +1,13 @@
 package com.example.ruhan_2207088_hospital_management_system;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,20 +19,22 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class ViewPatientsActivity extends AppCompatActivity {
+public class ViewPatientsFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private PatientAdapter adapter;
     private ArrayList<Patient> patientList;
     private DatabaseReference mDatabase;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_patients);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // 1. Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.activity_view_patients, container, false);
 
-        recyclerView = findViewById(R.id.recyclerViewPatients);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        // 2. Initialize Views using the 'view' object
+        recyclerView = view.findViewById(R.id.recyclerViewPatients);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         patientList = new ArrayList<>();
         adapter = new PatientAdapter(patientList);
@@ -36,23 +42,31 @@ public class ViewPatientsActivity extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance().getReference("patients");
 
-        // database thake data fetch kortechi
+        // 3. Database Listener
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                patientList.clear(); // ager data clear kortechi
+                patientList.clear();
                 for (DataSnapshot data : snapshot.getChildren()) {
                     Patient p = data.getValue(Patient.class);
-                    patientList.add(p);
+                    if (p != null) {
+                        patientList.add(p);
+                    }
                 }
                 adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(ViewPatientsActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                if (getContext() != null) {
+                    Toast.makeText(getContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
-        findViewById(R.id.btnBackToDashboard).setOnClickListener(v -> finish());
+
+
+
+
+        return view;
     }
 }

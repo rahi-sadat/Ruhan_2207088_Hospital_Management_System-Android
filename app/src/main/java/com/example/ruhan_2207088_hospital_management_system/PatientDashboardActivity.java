@@ -51,7 +51,24 @@ public class PatientDashboardActivity extends AppCompatActivity {
             if (id == R.id.nav_patient_profile) {
                 loadProfileFragment();
             } else if (id == R.id.nav_book_appointment) {
-                // Future Appointment Fragment logic
+
+                BookAppointmentFragment bookFragment = new BookAppointmentFragment();
+
+
+                Bundle args = new Bundle();
+                args.putString("patientId", loggedInId);
+                bookFragment.setArguments(args);
+
+
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.patient_content_area, bookFragment)
+                        .commit();
+
+
+                if (getSupportActionBar() != null) {
+                    getSupportActionBar().setTitle("Book Appointment");
+                }
+
             } else if (id == R.id.nav_patient_logout) {
                 finish();
             }
