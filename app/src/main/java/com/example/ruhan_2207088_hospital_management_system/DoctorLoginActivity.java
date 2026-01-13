@@ -2,6 +2,7 @@ package com.example.ruhan_2207088_hospital_management_system;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -28,6 +29,12 @@ public class DoctorLoginActivity extends AppCompatActivity {
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
     }
 
+    public void goToMain(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     private void loginDoctor() {
         String loginId = etLoginId.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
@@ -48,17 +55,17 @@ public class DoctorLoginActivity extends AppCompatActivity {
                     if (dbPassword != null && password.equals(dbPassword)) {
                         Toast.makeText(DoctorLoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
 
-
                         Intent intent = new Intent(DoctorLoginActivity.this, DoctorDashboard.class);
+
+                        // CHANGE THIS: Match the key used in DoctorDashboard ("doctorId")
+                        intent.putExtra("doctorId", loginId);
+
+                        // This matches the "name" field in your database
                         intent.putExtra("docName", snapshot.child("name").getValue(String.class));
-                        intent.putExtra("docId", loginId);
-
-
-                        intent.putExtra("currentPassword", dbPassword);
 
                         startActivity(intent);
                         finish();
-                    } else {
+                    }else {
                         Toast.makeText(DoctorLoginActivity.this, "Incorrect Password", Toast.LENGTH_SHORT).show();
                     }
                 } else {

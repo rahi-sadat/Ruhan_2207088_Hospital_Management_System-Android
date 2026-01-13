@@ -32,19 +32,27 @@ public class PricingAdapter extends RecyclerView.Adapter<PricingAdapter.PricingV
     @Override
     public void onBindViewHolder(@NonNull PricingViewHolder holder, int position) {
         Pricing pricing = pricingList.get(position);
-        holder.tvName.setText(pricing.serviceName);
-        holder.tvAmount.setText(pricing.price + " TK");
+
+        if (pricing == null) return;
+
+        // Display the service name
+        holder.tvName.setText(pricing.serviceName != null ? pricing.serviceName : "Unnamed Service");
+
+        // FIX: Handle price as an Object to accommodate the Numbers in your database
+        // This converts the Long/Integer from Firebase into a String for the UI
+        String priceText = (pricing.price != null) ? String.valueOf(pricing.price) : "0";
+        holder.tvAmount.setText(priceText + " TK");
 
         holder.btnDelete.setOnClickListener(v -> {
-            if (pricing.serviceId != null) {
-                // Delete from Firebase
+            // In your database, 'serviceId' matches the node key (e.g., blood_test)
+            String key = pricing.serviceId;
+
+            if (key != null) {
                 FirebaseDatabase.getInstance().getReference("hospital_pricing")
-                        .child(pricing.serviceId)
+                        .child(key)
                         .removeValue()
                         .addOnSuccessListener(aVoid -> {
-                            Toast.makeText(v.getContext(), pricing.serviceName + " Removed", Toast.LENGTH_SHORT).show();
-                            // Note: The UI will auto-refresh if you have a ValueEventListener
-                            // in your Fragment. If not, you'd call notifyItemRemoved(position) here.
+                            Toast.makeText(v.getContext(), "Service Removed", Toast.LENGTH_SHORT).show();
                         })
                         .addOnFailureListener(e -> {
                             Toast.makeText(v.getContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -55,7 +63,7 @@ public class PricingAdapter extends RecyclerView.Adapter<PricingAdapter.PricingV
 
     @Override
     public int getItemCount() {
-        return pricingList.size();
+        return (pricingList != null) ? pricingList.size() : 0;
     }
 
     public static class PricingViewHolder extends RecyclerView.ViewHolder {

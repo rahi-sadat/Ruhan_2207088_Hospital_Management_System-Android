@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F5F5"
     android:padding="30dp">
 
     <LinearLayout
@@ -10,19 +11,34 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Patient Login"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="#3498DB"
+            android:layout_gravity="center"
+            android:layout_marginBottom="30dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Patient ID"
-            android:textColor="#000000" />
+            android:textStyle="bold"
+            android:textColor="#2C3E50" />
 
         <EditText
             android:id="@+id/txtPatientId"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
             android:hint="Enter Patient ID"
+            android:background="@android:drawable/editbox_background"
+            android:paddingLeft="10dp"
             android:inputType="text" />
 
         <TextView
@@ -30,26 +46,30 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:text="Password"
-            android:textColor="#000000" />
+            android:textStyle="bold"
+            android:textColor="#2C3E50" />
 
         <EditText
             android:id="@+id/txtPatientPass"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
             android:hint="Enter your password"
+            android:background="@android:drawable/editbox_background"
+            android:paddingLeft="10dp"
             android:inputType="textPassword" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="25dp"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btnPatientLogin"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_weight="1"
+                android:backgroundTint="#3498DB"
                 android:text="Login" />
 
             <Space
@@ -59,8 +79,9 @@
             <Button
                 android:id="@+id/btnCreateAccount"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5"
+                android:layout_height="60dp"
+                android:layout_weight="1.2"
+                android:backgroundTint="#2C3E50"
                 android:text="New Account" />
         </LinearLayout>
 
@@ -69,7 +90,7 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:text="← Back to Home"
             android:textColor="#757575" />
 

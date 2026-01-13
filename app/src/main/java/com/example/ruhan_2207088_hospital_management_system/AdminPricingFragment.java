@@ -49,46 +49,61 @@ public class AdminPricingFragment extends Fragment {
             return;
         }
 
-        // IMPORTANT FIX:
-        // To ensure the "Approve" button finds the price,
-        // we should keep the ID exactly as the name for standard services.
-        String id = name;
+        // Logic to match your database screenshot: Use a formatted name as the ID
+        // e.g., "Blood Test" becomes "blood_test"
+        String id = name.toLowerCase().replace(" ", "_").replaceAll("[^a-z0-9_]", "");
 
-        // Check if your Pricing model constructor takes (String, String, String)
-        // If price in your model is Double, keep it as: new Pricing(id, name, Double.parseDouble(priceStr))
-        Pricing p = new Pricing(id, name, priceStr);
+        try {
+            // Convert input to a Number (Long) to match your database format
+            long numericPrice = Long.parseLong(priceStr);
 
-        dbRef.child(id).setValue(p).addOnSuccessListener(unused -> {
-            if (getContext() != null) {
-                Toast.makeText(getContext(), "Price Updated Successfully!", Toast.LENGTH_SHORT).show();
-            }
-            etName.setText("");
-            etPrice.setText("");
-        }).addOnFailureListener(e -> {
-            if (getContext() != null) {
-                Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+            // Create object with numeric price
+            Pricing p = new Pricing(id, name, numericPrice);
+
+            dbRef.child(id).setValue(p).addOnSuccessListener(unused -> {
+                if (isAdded()) {
+                    Toast.makeText(getContext(), "Price Added Successfully!", Toast.LENGTH_SHORT).show();
+                    etName.setText("");
+                    etPrice.setText("");
+                }
+            }).addOnFailureListener(e -> {
+                if (isAdded()) {
+                    Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (NumberFormatException e) {
+            Toast.makeText(getContext(), "Please enter a valid numeric price", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void loadPricingData() {
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!isAdded()) return;
+
                 pricingList.clear();
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    Pricing p = ds.getValue(Pricing.class);
-                    if (p != null) {
-                        // Ensure the serviceId is set from the Firebase key
-                        p.serviceId = ds.getKey();
-                        pricingList.add(p);
+                if (snapshot.exists()) {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        try {
+                            // Firebase maps the Number to the Object field in your Pricing model
+                            Pricing p = ds.getValue(Pricing.class);
+                            if (p != null) {
+                                p.serviceId = ds.getKey();
+                                pricingList.add(p);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
                 adapter.notifyDataSetChanged();
             }
-            @Override public void onCancelled(@NonNull DatabaseError error) {
-                if (getContext() != null) {
-                    Toast.makeText(getContext(), "Failed to load data", Toast.LENGTH_SHORT).show();
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                if (isAdded()) {
+                    Toast.makeText(getContext(), "Database Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });

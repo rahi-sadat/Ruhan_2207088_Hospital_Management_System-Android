@@ -56,7 +56,22 @@ public class PatientDashboardActivity extends AppCompatActivity {
             } else if (id == R.id.nav_book_appointment) {
                 selectedFragment = new BookAppointmentFragment();
                 title = "Book Appointment";
-            } else if (id == R.id.nav_patient_billing) {
+            } else if (id == R.id.nav_medical_reports) {
+
+                selectedFragment = new MedicalReportsFragment();
+                title = "Medical Reports";
+
+                // Pass BOTH IDs to be safe
+                Bundle args = new Bundle();
+                args.putString("patientId", loggedInId);
+
+                // IMPORTANT: In a real app, you'd select an appointment first.
+                // For now, we use patientId as the reference for the report.
+                args.putString("appointmentId", loggedInId);
+                selectedFragment.setArguments(args);
+
+                }
+            else if (id == R.id.nav_patient_billing) {
                 // NEW: Handle Billing Section
                 selectedFragment = new PatientBillingFragment();
                 title = "My Bills";

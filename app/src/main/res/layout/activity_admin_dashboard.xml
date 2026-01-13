@@ -3,25 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/admin_drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/admin_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        android:orientation="vertical"
+        android:background="#FFF5F0"> <androidx.appcompat.widget.Toolbar
+        android:id="@+id/admin_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#E67E22" android:elevation="6dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:title="Admin Panel"
+        app:titleTextColor="#FFFFFF" />
 
         <FrameLayout
             android:id="@+id/admin_content_area"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:padding="8dp" />
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -29,7 +32,10 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="#FFFFFF"
         app:headerLayout="@layout/nav_header_admin"
+        app:itemIconTint="#C0392B" app:itemTextColor="#D35400" app:itemShapeFillColor="#1AE67E22" app:itemShapeInsetStart="12dp"
+        app:itemShapeInsetEnd="12dp"
         app:menu="@menu/admin_drawer_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

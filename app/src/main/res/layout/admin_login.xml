@@ -3,81 +3,82 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F5F5"
     android:padding="30dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Admin Login"
-            android:textSize="24sp"
-            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_marginBottom="40dp"
+            android:text="Admin Portal"
+            android:textColor="#E74C3C"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Admin ID"
+            android:textColor="#2C3E50"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/txtAdminId"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="20dp"
+            android:background="@android:drawable/editbox_background"
+            android:hint="Enter Admin ID"
+            android:inputType="text"
+            android:paddingStart="15dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Password"
+            android:textColor="#2C3E50"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/txtAdminPass"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginTop="5dp"
             android:layout_marginBottom="30dp"
-            android:textColor="#000000"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="15dp">
-
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:text="Admin ID"
-                android:textColor="#000000" />
-
-            <EditText
-                android:id="@+id/txtAdminId"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter Admin ID"
-                android:inputType="text" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="20dp">
-
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:text="Password"
-                android:textColor="#000000" />
-
-            <EditText
-                android:id="@+id/txtAdminPass"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter password"
-                android:inputType="textPassword" />
-        </LinearLayout>
+            android:background="@android:drawable/editbox_background"
+            android:hint="Enter password"
+            android:inputType="textPassword"
+            android:paddingStart="15dp" />
 
         <Button
             android:id="@+id/btnAdminLogin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Login as Admin"
-            android:textColor="#FFFFFF" />
+            android:layout_height="60dp"
+            android:backgroundTint="#E74C3C"
+            android:text="Secure Login"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            app:cornerRadius="8dp" />
 
         <Button
             android:id="@+id/btnBack"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="← Back to Home" />
+            android:layout_marginTop="15dp"
+            android:text="← Back to Home"
+            android:textColor="#7F8C8D" />
 
     </LinearLayout>
 

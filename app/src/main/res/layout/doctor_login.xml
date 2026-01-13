@@ -3,85 +3,83 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F5F5"
     android:padding="30dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Doctor Login"
-            android:textSize="24sp"
-            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_marginBottom="40dp"
+            android:text="Doctor Portal"
+            android:textColor="#27AE60"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Doctor ID"
+            android:textColor="#2C3E50"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/txtDoctorId"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="20dp"
+            android:background="@android:drawable/editbox_background"
+            android:hint="Enter Doctor ID"
+            android:inputType="text"
+            android:paddingStart="15dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Password"
+            android:textColor="#2C3E50"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/txtDoctorPass"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginTop="5dp"
             android:layout_marginBottom="30dp"
-            android:textColor="#000000"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="15dp">
-
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:text="Doctor ID"
-                android:textColor="#000000" />
-
-            <EditText
-                android:id="@+id/txtDoctorId"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter Doctor ID"
-                android:inputType="text" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="20dp">
-
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:text="Password"
-                android:textColor="#000000" />
-
-            <EditText
-                android:id="@+id/txtDoctorPass"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter your password"
-                android:inputType="textPassword" />
-        </LinearLayout>
+            android:background="@android:drawable/editbox_background"
+            android:hint="Enter your password"
+            android:inputType="textPassword"
+            android:paddingStart="15dp" />
 
         <Button
             android:id="@+id/btnDoctorLogin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Login" />
+            android:layout_height="60dp"
+            android:backgroundTint="#27AE60"
+            android:text="Doctor Login"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            app:cornerRadius="8dp" />
 
         <Button
             android:id="@+id/btnBack"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:text="← Back to Home"
-            />
+            android:textColor="#7F8C8D" />
 
     </LinearLayout>
-
-    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

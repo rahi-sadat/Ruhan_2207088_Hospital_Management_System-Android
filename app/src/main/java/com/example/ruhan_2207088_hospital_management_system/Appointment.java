@@ -8,8 +8,22 @@ public class Appointment {
     private String status;
     private double totalBill;
     private String paymentStatus;
+
+
+
+        private String reportUrl;
+
+
+
+
+
+
+
     public Appointment() {} // Required
 
+
+    public String getReportUrl() { return reportUrl; }
+    public void setReportUrl(String reportUrl) { this.reportUrl = reportUrl; }
 
     public String getAppointmentId() { return appointmentId; }
     public String getDate() { return date; }

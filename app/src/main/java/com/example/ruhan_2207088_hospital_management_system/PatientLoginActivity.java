@@ -2,6 +2,7 @@ package com.example.ruhan_2207088_hospital_management_system;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,6 +42,12 @@ public class PatientLoginActivity extends AppCompatActivity {
         findViewById(R.id.btnPatientLogin).setOnClickListener(v -> {
             loginPatient();
         });
+    }
+
+    public void goToMain(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void loginPatient() {

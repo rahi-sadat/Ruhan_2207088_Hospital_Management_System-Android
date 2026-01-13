@@ -68,8 +68,14 @@ public class BillingAdapter extends RecyclerView.Adapter<BillingAdapter.BillView
             holder.tvBillStatus.setText(isPaid ? "Paid" : "Unpaid");
             holder.tvBillStatus.setTextColor(isPaid ? Color.parseColor("#27AE60") : Color.parseColor("#E74C3C"));
 
-            holder.btnPayNow.setVisibility(isPaid ? View.GONE : View.VISIBLE);
-            holder.btnDownloadPDF.setVisibility(isPaid ? View.VISIBLE : View.GONE);
+
+            if (isPaid) {
+                holder.btnPayNow.setVisibility(View.GONE);
+                holder.btnDownloadPDF.setVisibility(View.VISIBLE); // Now it will show!
+            } else {
+                holder.btnPayNow.setVisibility(View.VISIBLE);
+                holder.btnDownloadPDF.setVisibility(View.GONE);
+            }
         }
 
         holder.btnPayNow.setOnClickListener(v -> {

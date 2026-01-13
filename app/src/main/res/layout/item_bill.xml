@@ -14,45 +14,47 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
             <TextView
                 android:id="@+id/tvBillDate"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="Date: 13/01/2026"
                 android:textColor="#7F8C8D"/>
 
             <ImageButton
                 android:id="@+id/btnDownloadPDF"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_toStartOf="@id/tvBillStatus"
-                android:layout_marginEnd="10dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginEnd="8dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@android:drawable/stat_sys_download"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:tint="#3498DB"/>
 
             <TextView
                 android:id="@+id/tvBillStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
                 android:text="Unpaid"
-                android:textStyle="bold"
-                android:textColor="#E74C3C"/>
-        </RelativeLayout>
+                android:textColor="#E74C3C"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tvBillService"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="Service Name"
-            android:textStyle="bold"
             android:textSize="18sp"
-            android:layout_marginTop="8dp"/>
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/tvBillDoctor"
@@ -64,28 +66,30 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#D5DBDB"
-            android:layout_marginVertical="10dp"/>
+            android:layout_marginVertical="10dp"
+            android:background="#D5DBDB"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
                 android:id="@+id/tvBillAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:text="500 TK"
                 android:textColor="#27AE60"
-                android:textStyle="bold"
-                android:textSize="20sp"/>
+                android:textSize="20sp"
+                android:textStyle="bold"/>
 
             <Button
                 android:id="@+id/btnPayNow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:text="Pay Now"
                 android:backgroundTint="#3498DB"
+                android:text="Pay Now"
                 android:textSize="12sp"/>
         </RelativeLayout>
 

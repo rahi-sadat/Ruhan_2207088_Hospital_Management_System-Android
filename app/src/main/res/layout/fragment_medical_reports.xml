@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:gravity="center_horizontal"
+    android:background="#F8F9F9">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload Medical Report"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="#2C3E50"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please upload a clear image of your previous prescription or test result."
+        android:gravity="center"
+        android:textColor="#7F8C8D"
+        android:layout_marginBottom="30dp"/>
+
+    <androidx.cardview.widget.CardView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="250dp"
+        android:layout_height="350dp"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="5dp"
+        android:layout_marginBottom="30dp">
+
+        <ImageView
+            android:id="@+id/imgReportPreview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@android:drawable/ic_menu_gallery"
+            android:padding="50dp"
+            android:tint="#D5D8DC" />
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/btnSelectReport"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="Select Image from Gallery"
+        android:backgroundTint="#3498DB"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="12dp"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/btnUploadReport"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="Upload to Doctor"
+        android:backgroundTint="#27AE60"
+        android:textColor="@android:color/white"
+        android:textAllCaps="false"/>
+
+    <ProgressBar
+        android:id="@+id/uploadProgressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:visibility="gone" />
+
+</LinearLayout>

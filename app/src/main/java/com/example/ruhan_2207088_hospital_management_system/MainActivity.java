@@ -2,36 +2,52 @@ package com.example.ruhan_2207088_hospital_management_system;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-
+import android.widget.Button;
+import androidx.drawerlayout.widget.DrawerLayout;
+import com.google.android.material.navigation.NavigationView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+// Keep your other existing imports...
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
+public class MainActivity extends AppCompatActivity {
+
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private Toolbar toolbar;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+
+        // This creates the Hamburger Icon and animation
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
 
 
-    public class MainActivity extends AppCompatActivity {
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
 
-            findViewById(R.id.btnPatient).setOnClickListener(v -> {
-                Intent intent = new Intent(MainActivity.this, PatientLoginActivity.class);
-                startActivity(intent);
-            });
+            if (id == R.id.nav_patient) {
+                startActivity(new Intent(this, PatientLoginActivity.class));
+            } else if (id == R.id.nav_doctor) {
+                startActivity(new Intent(this, DoctorLoginActivity.class));
+            } else if (id == R.id.nav_admin) {
+                startActivity(new Intent(this, AdminLoginActivity.class));
+            }
 
-            findViewById(R.id.btnDoctor).setOnClickListener(v->{
-              Intent intent = new Intent( this , DoctorLoginActivity.class);
-              startActivity(intent);
-
-
-            });
-            findViewById(R.id.btnAdmin).setOnClickListener(v->{
-                Intent intent = new Intent( this , AdminLoginActivity.class);
-                startActivity(intent);
-
-
-            });
-
-
-        }
+            drawerLayout.closeDrawers(); // Close menu after clicking
+            return true;
+        });
     }
+}

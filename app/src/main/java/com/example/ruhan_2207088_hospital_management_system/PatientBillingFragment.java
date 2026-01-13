@@ -32,101 +32,83 @@ public class PatientBillingFragment extends Fragment {
             patientId = getArguments().getString("patientId");
         }
 
-        // Initialize Views
         rvBills = view.findViewById(R.id.rvBills);
         tvTotalPendingAmount = view.findViewById(R.id.tvTotalPendingAmount);
         btnCheckout = view.findViewById(R.id.btnCheckout);
-        tvEmptyState = view.findViewById(R.id.tvEmptyState); // Make sure this ID exists in your XML
+        tvEmptyState = view.findViewById(R.id.tvEmptyState);
 
-        // Setup RecyclerView
         rvBills.setLayoutManager(new LinearLayoutManager(getContext()));
         billList = new ArrayList<>();
         adapter = new BillingAdapter(billList);
         rvBills.setAdapter(adapter);
 
         btnCheckout.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Checkout Successful! Wish you good health.", Toast.LENGTH_LONG).show();
             if (getActivity() != null) {
+                Toast.makeText(getContext(), "Checkout Successful! Records cleared.", Toast.LENGTH_LONG).show();
                 getActivity().getSupportFragmentManager().popBackStack();
             }
         });
 
-        fetchBills();
+        fetchBillsAndTotalDue();
         return view;
     }
 
-    private void fetchBills() {
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference("appointments");
-        // Query to filter by this specific patient
-        Query query = db.orderByChild("patientId").equalTo(patientId);
+    private void fetchBillsAndTotalDue() {
+        DatabaseReference appointmentsRef = FirebaseDatabase.getInstance().getReference("appointments");
+        // Change this to look at the global patient total if needed,
+        // but the list calculation is more accurate for the current UI.
 
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                billList.clear();
-                double totalDue = 0;
-                boolean hasAtLeastOnePaidBill = false;
+        appointmentsRef.orderByChild("patientId").equalTo(patientId)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        billList.clear();
+                        double calculatedTotal = 0; // Local variable to sum bills
 
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    Appointment app = ds.getValue(Appointment.class);
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            Appointment app = ds.getValue(Appointment.class);
+                            if (app != null) {
+                                // REMOVE the ds.getRef().removeValue() logic.
+                                // We want to keep paid bills in the list so we can download them.
+                                billList.add(app);
 
-                    if (app != null) {
-                        double billAmount = app.getTotalBill();
-                        String paymentStatus = app.getPaymentStatus();
-
-                        // Logic: Only care about Approved appointments with an actual fee
-                        if ("Approved".equalsIgnoreCase(app.getStatus()) && billAmount > 0) {
-                            billList.add(app);
-
-                            if ("Paid".equalsIgnoreCase(paymentStatus)) {
-                                hasAtLeastOnePaidBill = true;
-                            } else {
-                                totalDue += billAmount;
+                                // Only add to the "Pending Total" if it is NOT paid
+                                if (!"Paid".equalsIgnoreCase(app.getPaymentStatus())) {
+                                    calculatedTotal += app.getTotalBill();
+                                }
                             }
                         }
+
+                        adapter.notifyDataSetChanged();
+                        tvEmptyState.setVisibility(billList.isEmpty() ? View.VISIBLE : View.GONE);
+                        rvBills.setVisibility(billList.isEmpty() ? View.GONE : View.VISIBLE);
+
+                        // 3. Update the UI with the ACTUAL sum (100 + 1000 = 1100)
+                        updateUI(calculatedTotal);
+
+                        // Optional: Sync this correct total back to the Patient node so it's correct everywhere
+                        FirebaseDatabase.getInstance().getReference("patients")
+                                .child(patientId).child("totalDue").setValue(calculatedTotal);
                     }
-                }
 
-                // Handle Empty State Visibility
-                if (billList.isEmpty()) {
-                    tvEmptyState.setVisibility(View.VISIBLE);
-                    rvBills.setVisibility(View.GONE);
-                } else {
-                    tvEmptyState.setVisibility(View.GONE);
-                    rvBills.setVisibility(View.VISIBLE);
-                }
-
-                adapter.notifyDataSetChanged();
-                // Update UI based on the new logic
-                updateUI(totalDue, hasAtLeastOnePaidBill);
-            }
-
-            @Override public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(), "Database Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+                    @Override public void onCancelled(@NonNull DatabaseError error) {}
+                });
     }
+    private void updateUI(double totalDue) {
+        tvTotalPendingAmount.setText("Total Pending: ৳" + totalDue);
 
-    private void updateUI(double totalDue, boolean hasPaidSomething) {
-        tvTotalPendingAmount.setText("Total Due: " + totalDue + " TK");
-
-        // Logic: All dues must be 0 AND the user must have actually paid at least one bill to checkout
-        if (totalDue == 0 && hasPaidSomething) {
+        if (totalDue <= 0 && !billList.isEmpty()) {
             btnCheckout.setEnabled(true);
-            btnCheckout.setBackgroundColor(Color.parseColor("#27AE60")); // Green
+            btnCheckout.setBackgroundColor(Color.parseColor("#27AE60"));
             btnCheckout.setText("Checkout Now");
+        } else if (totalDue > 0) {
+            btnCheckout.setEnabled(false);
+            btnCheckout.setBackgroundColor(Color.parseColor("#E74C3C"));
+            btnCheckout.setText("Pay ৳" + totalDue + " at Reception");
         } else {
             btnCheckout.setEnabled(false);
-            btnCheckout.setBackgroundColor(Color.parseColor("#95A5A6")); // Gray
-
-            if (totalDue > 0) {
-                btnCheckout.setText("Pay " + totalDue + " TK to Checkout");
-            } else if (billList.isEmpty()) {
-                btnCheckout.setText("Waiting for Approval");
-            } else {
-                // This covers the case where bills are present but nothing has been paid yet
-                btnCheckout.setText("Pay Dues to Checkout");
-            }
+            btnCheckout.setBackgroundColor(Color.parseColor("#95A5A6"));
+            btnCheckout.setText("No Pending Bills");
         }
     }
 }
