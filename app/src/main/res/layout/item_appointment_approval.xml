@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tvPatientInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Patient: Name (ID)"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="#2C3E50"/>
+
+        <TextView
+            android:id="@+id/tvDoctorInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Doctor: Dr. Name"
+            android:layout_marginTop="4dp"
+            android:textColor="#7F8C8D"/>
+
+        <TextView
+            android:id="@+id/tvAppDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date: 2026-01-15"
+            android:layout_marginTop="4dp"
+            android:textColor="#E67E22"
+            android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/btnApprove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Approve"
+            android:layout_gravity="end"
+            android:backgroundTint="#27AE60"
+            android:textColor="#FFFFFF"
+            app:cornerRadius="8dp"/>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

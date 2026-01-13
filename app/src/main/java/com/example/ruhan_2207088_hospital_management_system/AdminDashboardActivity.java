@@ -30,7 +30,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        // FIX: The OnBackPressed logic must be INSIDE onCreate
+
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -59,11 +59,15 @@ public class AdminDashboardActivity extends AppCompatActivity {
             } else if (id == R.id.nav_admin_view_doc) {
                 selectedFragment = new ViewDoctorsFragment();
                 title = "All Doctors";
-            } else if (id == R.id.nav_admin_pricing) { // New Pricing ID
+            } else if (id == R.id.nav_admin_pricing) {
                 selectedFragment = new AdminPricingFragment();
                 title = "Set Fees & Pricing";
-            } else if (id == R.id.nav_admin_logout) {
-                finish(); // Close dashboard and return to login
+            } else if (id == R.id.nav_admin_approve_app) {
+                selectedFragment = new ApproveAppointmentsFragment();
+                title = "Approve Appointments";
+            }
+            else if (id == R.id.nav_admin_logout) {
+                finish();
             }
 
             if (selectedFragment != null) {

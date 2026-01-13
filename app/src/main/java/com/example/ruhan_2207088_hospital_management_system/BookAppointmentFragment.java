@@ -31,35 +31,36 @@ public class BookAppointmentFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_book_appointment, container, false);
 
-        // 1. Get Patient ID passed from Dashboard
         if (getArguments() != null) {
             patientId = getArguments().getString("patientId");
         }
 
-        // 2. Init Views
         rvDoctors = view.findViewById(R.id.rvDoctors);
         lblSelectedDate = view.findViewById(R.id.lblSelectedDate);
         btnSelectDate = view.findViewById(R.id.btnSelectDate);
         btnSubmitRequest = view.findViewById(R.id.btnSubmitRequest);
 
-        // 3. Setup RecyclerView
         rvDoctors.setLayoutManager(new LinearLayoutManager(getContext()));
+
         adapter = new DoctorSelectAdapter(doctorList, doc -> {
             selectedDocId = doc.doctorId;
             selectedDocName = doc.name;
+            Toast.makeText(getContext(), "Selected: " + selectedDocName, Toast.LENGTH_SHORT).show();
         });
         rvDoctors.setAdapter(adapter);
 
-        // 4. Date Picker Logic
         btnSelectDate.setOnClickListener(v -> {
             Calendar c = Calendar.getInstance();
-            new DatePickerDialog(getContext(), (view1, year, month, day) -> {
+            DatePickerDialog datePicker = new DatePickerDialog(requireContext(), (view1, year, month, day) -> {
+                // Formatting date to match your Firebase screenshot (D/M/YYYY)
                 selectedDate = day + "/" + (month + 1) + "/" + year;
                 lblSelectedDate.setText("Date: " + selectedDate);
-            }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
+            }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+
+            datePicker.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+            datePicker.show();
         });
 
-        // 5. Submit Request
         btnSubmitRequest.setOnClickListener(v -> handleBooking());
 
         fetchDoctors();
@@ -79,7 +80,9 @@ public class BookAppointmentFragment extends Fragment {
                         }
                         adapter.notifyDataSetChanged();
                     }
-                    @Override public void onCancelled(@NonNull DatabaseError error) {}
+                    @Override public void onCancelled(@NonNull DatabaseError error) {
+                        if(getContext() != null) Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 });
     }
 
@@ -90,16 +93,27 @@ public class BookAppointmentFragment extends Fragment {
         }
 
         DatabaseReference db = FirebaseDatabase.getInstance().getReference("appointments");
-        String id = db.push().getKey();
+        String appId = db.push().getKey();
 
+        if (appId != null) {
+            // FIX: Using the setters that match your new Appointment Model
+            Appointment app = new Appointment();
+            app.setAppointmentId(appId);     // Matches Firebase "appointmentId"
+            app.setPatientId(patientId);       // Matches Firebase "patientId"
+            app.setDoctorId(selectedDocId);    // Matches Firebase "doctorId"
+            app.setDoctorName(selectedDocName);// Matches Firebase "doctorName"
+            app.setDate(selectedDate);         // Matches Firebase "date"
+            app.setStatus("Pending");          // Matches Firebase "Pending" (Case Sensitive)
 
-        Appointment app = new Appointment(id, patientId, selectedDocId, selectedDocName, selectedDate, "Pending");
-
-        db.child(id).setValue(app).addOnSuccessListener(unused -> {
-            Toast.makeText(getContext(), "Request sent to Admin!", Toast.LENGTH_SHORT).show();
-            // Reset UI
-            lblSelectedDate.setText("No date selected");
-            selectedDate = null;
-        });
+            db.child(appId).setValue(app).addOnSuccessListener(unused -> {
+                if (getContext() != null) {
+                    Toast.makeText(getContext(), "Request sent to Admin!", Toast.LENGTH_LONG).show();
+                }
+                lblSelectedDate.setText("No date selected");
+                selectedDate = null;
+            }).addOnFailureListener(e -> {
+                if (getContext() != null) Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            });
+        }
     }
 }

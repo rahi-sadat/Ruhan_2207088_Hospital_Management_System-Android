@@ -36,11 +36,20 @@ public class PricingAdapter extends RecyclerView.Adapter<PricingAdapter.PricingV
         holder.tvAmount.setText(pricing.price + " TK");
 
         holder.btnDelete.setOnClickListener(v -> {
-            // Delete from Firebase using the serviceId (which we set as the key)
-            FirebaseDatabase.getInstance().getReference("hospital_pricing")
-                    .child(pricing.serviceId)
-                    .removeValue()
-                    .addOnSuccessListener(aVoid -> Toast.makeText(v.getContext(), "Price Removed", Toast.LENGTH_SHORT).show());
+            if (pricing.serviceId != null) {
+                // Delete from Firebase
+                FirebaseDatabase.getInstance().getReference("hospital_pricing")
+                        .child(pricing.serviceId)
+                        .removeValue()
+                        .addOnSuccessListener(aVoid -> {
+                            Toast.makeText(v.getContext(), pricing.serviceName + " Removed", Toast.LENGTH_SHORT).show();
+                            // Note: The UI will auto-refresh if you have a ValueEventListener
+                            // in your Fragment. If not, you'd call notifyItemRemoved(position) here.
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(v.getContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        });
+            }
         });
     }
 

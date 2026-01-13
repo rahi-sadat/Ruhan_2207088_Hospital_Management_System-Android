@@ -14,9 +14,7 @@
         <activity
             android:name=".DoctorDashboard"
             android:exported="false" />
-        <activity
-            android:name=".ViewDoctorsActivity"
-            android:exported="false" />
+
         <activity
             android:name=".PatientLoginActivity"
             android:exported="false" />
@@ -35,13 +33,11 @@
         <activity
             android:name=".AdminDashboardActivity"
             android:exported="false" />
-        <activity
-            android:name=".AddDoctorActivity"
-            android:exported="false" />
+
         <activity
             android:name=".EditPatientProfileActivity"
             android:exported="false" />
-        <activity android:name=".ViewPatientsActivity" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">

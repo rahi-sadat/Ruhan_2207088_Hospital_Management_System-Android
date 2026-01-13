@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class PatientDashboardActivity extends AppCompatActivity {
@@ -20,7 +21,7 @@ public class PatientDashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.patient_dashboard);
 
-        // 1. Get Data from Intent (Keys matched with PatientLoginActivity)
+        // 1. Get Data from Intent
         loggedInId = getIntent().getStringExtra("p_id");
         loggedInName = getIntent().getStringExtra("p_name");
 
@@ -31,53 +32,61 @@ public class PatientDashboardActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.patient_drawer_layout);
         NavigationView navigationView = findViewById(R.id.patient_nav_view);
 
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-
+        // 3. Setup Header View
         View headerView = navigationView.getHeaderView(0);
         TextView lblPatientName = headerView.findViewById(R.id.lblPatientName);
         if (loggedInName != null) {
             lblPatientName.setText("Welcome, " + loggedInName);
         }
 
-
+        // 4. Navigation Selection Logic
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
+            Fragment selectedFragment = null;
+            String title = "Patient Dashboard";
 
             if (id == R.id.nav_patient_profile) {
-                loadProfileFragment();
+                selectedFragment = new PatientProfileFragment();
+                title = "My Profile";
             } else if (id == R.id.nav_book_appointment) {
-
-                BookAppointmentFragment bookFragment = new BookAppointmentFragment();
-
-
-                Bundle args = new Bundle();
-                args.putString("patientId", loggedInId);
-                bookFragment.setArguments(args);
-
-
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.patient_content_area, bookFragment)
-                        .commit();
-
-
-                if (getSupportActionBar() != null) {
-                    getSupportActionBar().setTitle("Book Appointment");
-                }
-
+                selectedFragment = new BookAppointmentFragment();
+                title = "Book Appointment";
+            } else if (id == R.id.nav_patient_billing) {
+                // NEW: Handle Billing Section
+                selectedFragment = new PatientBillingFragment();
+                title = "My Bills";
             } else if (id == R.id.nav_patient_logout) {
                 finish();
+                return true;
+            }
+
+            if (selectedFragment != null) {
+                // Pass Patient ID to the fragment
+                Bundle args = new Bundle();
+                args.putString("patientId", loggedInId);
+                selectedFragment.setArguments(args);
+
+                // Perform the Fragment Swap
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.patient_content_area, selectedFragment)
+                        .addToBackStack(null) // Allows user to go back
+                        .commit();
+
+                if (getSupportActionBar() != null) {
+                    getSupportActionBar().setTitle(title);
+                }
             }
 
             drawerLayout.closeDrawer(GravityCompat.START);
             return true;
         });
 
-
+        // Load Default Fragment
         if (savedInstanceState == null) {
             loadProfileFragment();
             navigationView.setCheckedItem(R.id.nav_patient_profile);
@@ -85,13 +94,11 @@ public class PatientDashboardActivity extends AppCompatActivity {
     }
 
     private void loadProfileFragment() {
-
         PatientProfileFragment fragment = new PatientProfileFragment();
         Bundle args = new Bundle();
-        args.putString("patientId", loggedInId); // Fragment expects "patientId"
+        args.putString("patientId", loggedInId);
         fragment.setArguments(args);
 
-        // Perform the swap
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.patient_content_area, fragment)
                 .commit();

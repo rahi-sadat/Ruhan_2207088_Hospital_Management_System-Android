@@ -6,9 +6,9 @@
             android:icon="@android:drawable/ic_menu_myplaces"
             android:title="View All Patients" />
         <item
-            android:id="@+id/nav_admin_approve"
-            android:icon="@android:drawable/ic_menu_agenda"
-            android:title="Appointment Approval" />
+            android:id="@+id/nav_admin_approve_app"
+            android:icon="@android:drawable/ic_menu_today"
+            android:title="Pending Approvals" />
         <item
             android:id="@+id/nav_admin_add_doc"
             android:icon="@android:drawable/ic_menu_add"
