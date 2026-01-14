@@ -38,7 +38,7 @@ public class DoctorAdapter extends RecyclerView.Adapter<DoctorAdapter.ViewHolder
         holder.phone.setText("📞 " + doc.phoneNumber);
         holder.schedule.setText("⏰ " + (doc.schedule != null ? doc.schedule : "Not set"));
 
-        // DELETE LOGIC
+
         holder.btnDelete.setOnClickListener(v -> {
             new AlertDialog.Builder(v.getContext())
                     .setTitle("Delete Doctor")
@@ -52,7 +52,7 @@ public class DoctorAdapter extends RecyclerView.Adapter<DoctorAdapter.ViewHolder
                     .show();
         });
 
-        // EDIT LOGIC (Fragment Transaction)
+
         holder.btnEdit.setOnClickListener(v -> {
             AddDoctorFragment fragment = new AddDoctorFragment();
             Bundle args = new Bundle();

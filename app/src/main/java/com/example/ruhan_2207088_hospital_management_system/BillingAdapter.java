@@ -42,23 +42,21 @@ public class BillingAdapter extends RecyclerView.Adapter<BillingAdapter.BillView
         holder.tvBillDate.setText(app.getDate());
         holder.tvBillDoctor.setText("Ref: " + app.getDoctorName());
 
-        // Display the bill amount
+
         double billAmount = app.getTotalBill();
         holder.tvBillAmount.setText(billAmount + " TK");
 
-        // FIX 1: SERVICE LABELING LOGIC
-        // If there is a doctor name, it's a Consultation.
-        // Otherwise, check for specific fees or label as a Test.
+
         if (app.getDoctorName() != null && !app.getDoctorName().isEmpty()) {
             holder.tvBillService.setText("Consultation: " + app.getDoctorName());
         } else {
             holder.tvBillService.setText("Medical Service/Test");
         }
 
-        // FIX 2: PAYMENT STATUS & BUTTON VISIBILITY
+
         boolean isPaid = "Paid".equalsIgnoreCase(app.getPaymentStatus());
 
-        // If the bill is 0.0, we shouldn't show "Unpaid" or "Pay Now"
+
         if (billAmount <= 0) {
             holder.tvBillStatus.setText("N/A");
             holder.tvBillStatus.setTextColor(Color.GRAY);
@@ -104,8 +102,7 @@ public class BillingAdapter extends RecyclerView.Adapter<BillingAdapter.BillView
         canvas.drawText("Status: PAID", 20, 200, paint);
         pdf.finishPage(page);
 
-        // --- FILE SAVING LOGIC ---
-        // Save to the PUBLIC Downloads folder
+
         File downloadsFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File file = new File(downloadsFolder, "Receipt_" + app.getAppointmentId() + ".pdf");
 
@@ -113,7 +110,7 @@ public class BillingAdapter extends RecyclerView.Adapter<BillingAdapter.BillView
             pdf.writeTo(new FileOutputStream(file));
             Toast.makeText(context, "Saved to Downloads: " + file.getName(), Toast.LENGTH_LONG).show();
 
-            // This line makes the file show up in the "Downloads" app immediately
+
             android.media.MediaScannerConnection.scanFile(context, new String[]{file.getAbsolutePath()}, null, null);
 
         } catch (IOException e) {

@@ -31,7 +31,7 @@ public class DoctorDashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor_dashboard);
 
-        // 1. Get Data from Intent (Using your working method)
+
         loggedInDoctorId = getIntent().getStringExtra("doctorId");
         String nameFromLogin = getIntent().getStringExtra("docName");
 
@@ -41,7 +41,7 @@ public class DoctorDashboard extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
 
-        // 2. Setup Header - Immediate update to prevent empty view
+
         View headerView = navigationView.getHeaderView(0);
         lblName = headerView.findViewById(R.id.lblDoctorName);
 
@@ -49,7 +49,7 @@ public class DoctorDashboard extends AppCompatActivity {
             lblName.setText("Welcome, " + nameFromLogin);
         }
 
-        // 3. Optional: Real-time update in background
+
         fetchDoctorInfo();
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -57,7 +57,7 @@ public class DoctorDashboard extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        // 4. Fragment Loading - Added check to prevent crash if XML ID is wrong
+
         if (savedInstanceState == null && findViewById(R.id.fragment_container) != null) {
             loadFragment(new DoctorProfileFragment(), "Profile");
         }
@@ -112,8 +112,7 @@ public class DoctorDashboard extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
-                .commitAllowingStateLoss(); // More stable for quick transitions
-
+                .commitAllowingStateLoss();
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);
         }

@@ -38,12 +38,12 @@ public class MedicalReportsFragment extends Fragment {
     private ImageView imgPreview;
     private Button btnSelect, btnUpload;
     private ProgressBar progressBar;
-    private String patientId; // Changed from appointmentId to match your Dashboard
+    private String patientId;
 
     private final ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
             registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
                 if (uri != null) {
-                    imageUri = uri; // This saves the selection
+                    imageUri = uri;
                     imgPreview.setImageURI(uri);
                     imgPreview.setPadding(0, 0, 0, 0);
                     imgPreview.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
@@ -57,7 +57,7 @@ public class MedicalReportsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_medical_reports, container, false);
 
-        // FIX: Your PatientDashboardActivity sends "patientId"
+
         if (getArguments() != null) {
             patientId = getArguments().getString("patientId");
             Log.d("DEBUG_ID", "Received Patient ID: " + patientId);
@@ -88,15 +88,15 @@ public class MedicalReportsFragment extends Fragment {
         btnUpload.setEnabled(false);
 
         try {
-            // 1. Convert URI to Byte Array
+
             InputStream iStream = getContext().getContentResolver().openInputStream(imageUri);
             byte[] inputData = getBytes(iStream);
 
-            // 2. Prepare the RequestBody
+
             RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), inputData);
             MultipartBody.Part body = MultipartBody.Part.createFormData("image", "report.jpg", requestFile);
 
-            // 3. Initialize Retrofit
+
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("https://api.imgbb.com/")
                     .addConverterFactory(GsonConverterFactory.create())
@@ -104,7 +104,7 @@ public class MedicalReportsFragment extends Fragment {
 
             ImgBBApi api = retrofit.create(ImgBBApi.class);
 
-            // 4. Make the Call (Replace YOUR_API_KEY with your real key)
+         //  Amar API
             api.uploadImage("369b5649ee2737791b6971416d1a8373", body).enqueue(new Callback<ImgBBResponse>() {
                 @Override
                 public void onResponse(Call<ImgBBResponse> call, Response<ImgBBResponse> response) {
@@ -152,7 +152,7 @@ public class MedicalReportsFragment extends Fragment {
         return byteBuffer.toByteArray();
     }
     private void handleFailure(String message) {
-        // Run on UI Thread to update views
+
         if (getActivity() != null) {
             getActivity().runOnUiThread(() -> {
                 progressBar.setVisibility(View.GONE);

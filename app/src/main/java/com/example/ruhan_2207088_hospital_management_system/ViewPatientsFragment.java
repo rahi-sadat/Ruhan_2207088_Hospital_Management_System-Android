@@ -29,10 +29,10 @@ public class ViewPatientsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // 1. Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.activity_view_patients, container, false);
 
-        // 2. Initialize Views using the 'view' object
+
         recyclerView = view.findViewById(R.id.recyclerViewPatients);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -42,7 +42,7 @@ public class ViewPatientsFragment extends Fragment {
 
         mDatabase = FirebaseDatabase.getInstance().getReference("patients");
 
-        // 3. Database Listener
+
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

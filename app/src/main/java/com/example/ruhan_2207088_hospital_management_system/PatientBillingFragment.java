@@ -55,24 +55,22 @@ public class PatientBillingFragment extends Fragment {
 
     private void fetchBillsAndTotalDue() {
         DatabaseReference appointmentsRef = FirebaseDatabase.getInstance().getReference("appointments");
-        // Change this to look at the global patient total if needed,
-        // but the list calculation is more accurate for the current UI.
+
 
         appointmentsRef.orderByChild("patientId").equalTo(patientId)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         billList.clear();
-                        double calculatedTotal = 0; // Local variable to sum bills
+                        double calculatedTotal = 0;
 
                         for (DataSnapshot ds : snapshot.getChildren()) {
                             Appointment app = ds.getValue(Appointment.class);
                             if (app != null) {
-                                // REMOVE the ds.getRef().removeValue() logic.
-                                // We want to keep paid bills in the list so we can download them.
+
                                 billList.add(app);
 
-                                // Only add to the "Pending Total" if it is NOT paid
+
                                 if (!"Paid".equalsIgnoreCase(app.getPaymentStatus())) {
                                     calculatedTotal += app.getTotalBill();
                                 }
@@ -83,10 +81,10 @@ public class PatientBillingFragment extends Fragment {
                         tvEmptyState.setVisibility(billList.isEmpty() ? View.VISIBLE : View.GONE);
                         rvBills.setVisibility(billList.isEmpty() ? View.GONE : View.VISIBLE);
 
-                        // 3. Update the UI with the ACTUAL sum (100 + 1000 = 1100)
+
                         updateUI(calculatedTotal);
 
-                        // Optional: Sync this correct total back to the Patient node so it's correct everywhere
+
                         FirebaseDatabase.getInstance().getReference("patients")
                                 .child(patientId).child("totalDue").setValue(calculatedTotal);
                     }

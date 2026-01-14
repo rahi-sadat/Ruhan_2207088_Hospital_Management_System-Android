@@ -52,7 +52,7 @@ public class BookAppointmentFragment extends Fragment {
         btnSelectDate.setOnClickListener(v -> {
             Calendar c = Calendar.getInstance();
             DatePickerDialog datePicker = new DatePickerDialog(requireContext(), (view1, year, month, day) -> {
-                // Formatting date to match your Firebase screenshot (D/M/YYYY)
+
                 selectedDate = day + "/" + (month + 1) + "/" + year;
                 lblSelectedDate.setText("Date: " + selectedDate);
             }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
@@ -96,14 +96,14 @@ public class BookAppointmentFragment extends Fragment {
         String appId = db.push().getKey();
 
         if (appId != null) {
-            // FIX: Using the setters that match your new Appointment Model
+
             Appointment app = new Appointment();
-            app.setAppointmentId(appId);     // Matches Firebase "appointmentId"
-            app.setPatientId(patientId);       // Matches Firebase "patientId"
-            app.setDoctorId(selectedDocId);    // Matches Firebase "doctorId"
-            app.setDoctorName(selectedDocName);// Matches Firebase "doctorName"
-            app.setDate(selectedDate);         // Matches Firebase "date"
-            app.setStatus("Pending");          // Matches Firebase "Pending" (Case Sensitive)
+            app.setAppointmentId(appId);
+            app.setPatientId(patientId);
+            app.setDoctorId(selectedDocId);
+            app.setDoctorName(selectedDocName);
+            app.setDate(selectedDate);
+            app.setStatus("Pending");
 
             db.child(appId).setValue(app).addOnSuccessListener(unused -> {
                 if (getContext() != null) {

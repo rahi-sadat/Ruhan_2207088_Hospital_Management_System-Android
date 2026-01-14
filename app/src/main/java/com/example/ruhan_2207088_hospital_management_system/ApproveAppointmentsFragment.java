@@ -27,13 +27,13 @@ public class ApproveAppointmentsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         appointmentList = new ArrayList<>();
-        // Pass the list to the adapter
+
         adapter = new AppointmentApprovalAdapter(appointmentList);
         recyclerView.setAdapter(adapter);
 
         dbRef = FirebaseDatabase.getInstance().getReference("appointments");
 
-        // Query matches your Firebase screenshot casing "Pending"
+
         Query pendingQuery = dbRef.orderByChild("status").equalTo("Pending");
 
         pendingQuery.addValueEventListener(new ValueEventListener() {
@@ -43,7 +43,7 @@ public class ApproveAppointmentsFragment extends Fragment {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     Appointment app = ds.getValue(Appointment.class);
                     if (app != null) {
-                        // Use the correct setter from your Appointment model
+
                         app.setAppointmentId(ds.getKey());
                         appointmentList.add(app);
                     }

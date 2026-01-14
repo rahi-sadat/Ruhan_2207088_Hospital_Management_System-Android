@@ -21,11 +21,11 @@ public class PatientDashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.patient_dashboard);
 
-        // 1. Get Data from Intent
+
         loggedInId = getIntent().getStringExtra("p_id");
         loggedInName = getIntent().getStringExtra("p_name");
 
-        // 2. Setup Toolbar
+
         Toolbar toolbar = findViewById(R.id.patient_toolbar);
         setSupportActionBar(toolbar);
 
@@ -61,18 +61,17 @@ public class PatientDashboardActivity extends AppCompatActivity {
                 selectedFragment = new MedicalReportsFragment();
                 title = "Medical Reports";
 
-                // Pass BOTH IDs to be safe
+
                 Bundle args = new Bundle();
                 args.putString("patientId", loggedInId);
 
-                // IMPORTANT: In a real app, you'd select an appointment first.
-                // For now, we use patientId as the reference for the report.
+
                 args.putString("appointmentId", loggedInId);
                 selectedFragment.setArguments(args);
 
                 }
             else if (id == R.id.nav_patient_billing) {
-                // NEW: Handle Billing Section
+
                 selectedFragment = new PatientBillingFragment();
                 title = "My Bills";
             } else if (id == R.id.nav_patient_logout) {
@@ -81,15 +80,15 @@ public class PatientDashboardActivity extends AppCompatActivity {
             }
 
             if (selectedFragment != null) {
-                // Pass Patient ID to the fragment
+
                 Bundle args = new Bundle();
                 args.putString("patientId", loggedInId);
                 selectedFragment.setArguments(args);
 
-                // Perform the Fragment Swap
+
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.patient_content_area, selectedFragment)
-                        .addToBackStack(null) // Allows user to go back
+                        .addToBackStack(null)
                         .commit();
 
                 if (getSupportActionBar() != null) {
@@ -101,7 +100,7 @@ public class PatientDashboardActivity extends AppCompatActivity {
             return true;
         });
 
-        // Load Default Fragment
+
         if (savedInstanceState == null) {
             loadProfileFragment();
             navigationView.setCheckedItem(R.id.nav_patient_profile);

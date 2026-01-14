@@ -35,16 +35,15 @@ public class PricingAdapter extends RecyclerView.Adapter<PricingAdapter.PricingV
 
         if (pricing == null) return;
 
-        // Display the service name
+
         holder.tvName.setText(pricing.serviceName != null ? pricing.serviceName : "Unnamed Service");
 
-        // FIX: Handle price as an Object to accommodate the Numbers in your database
-        // This converts the Long/Integer from Firebase into a String for the UI
+
         String priceText = (pricing.price != null) ? String.valueOf(pricing.price) : "0";
         holder.tvAmount.setText(priceText + " TK");
 
         holder.btnDelete.setOnClickListener(v -> {
-            // In your database, 'serviceId' matches the node key (e.g., blood_test)
+
             String key = pricing.serviceId;
 
             if (key != null) {

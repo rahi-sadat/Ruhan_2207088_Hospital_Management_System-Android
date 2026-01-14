@@ -14,11 +14,11 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     private List<AppointmentModel> list;
     private OnAppointmentClickListener listener;
 
-    // Updated Interface with 3 distinct actions
+
     public interface OnAppointmentClickListener {
         void onTreatClick(AppointmentModel appointment);
         void onHistoryClick(String patientId);
-        void onReportClick(String patientId); // Separated from History
+        void onReportClick(String patientId);
     }
 
     public AppointmentAdapter(List<AppointmentModel> list, OnAppointmentClickListener listener) {
@@ -37,20 +37,19 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         AppointmentModel m = list.get(position);
 
-        // Fix: Use the correct getter that matches your Firebase key "name"
-        // If your model still shows "Unknown", check if the model uses 'patientName' instead of 'name'
+
         String displayName = m.getPatientName();
         holder.name.setText(displayName != null && !displayName.isEmpty() ? displayName : "Unknown Patient");
 
         holder.date.setText(m.getDate());
 
-        // Button 1: History (Medical history text)
+
         holder.btnHistory.setOnClickListener(v -> listener.onHistoryClick(m.getPatientId()));
 
-        // Button 2: Report (Digital URL)
+
         holder.btnReport.setOnClickListener(v -> listener.onReportClick(m.getPatientId()));
 
-        // Button 3: Treat (Treatment Dialog)
+
         holder.btnTreat.setOnClickListener(v -> listener.onTreatClick(m));
     }
 
@@ -67,7 +66,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             date = itemView.findViewById(R.id.appointmentDate);
             btnTreat = itemView.findViewById(R.id.btnTreat);
             btnHistory = itemView.findViewById(R.id.btnHistory);
-            btnReport = itemView.findViewById(R.id.btnReport); // Matches new XML ID
+            btnReport = itemView.findViewById(R.id.btnReport);
         }
     }
 }

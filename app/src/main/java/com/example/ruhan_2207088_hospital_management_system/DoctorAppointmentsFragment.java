@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
 import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -82,14 +85,13 @@ public class DoctorAppointmentsFragment extends Fragment {
                             if (model != null) {
                                 model.setAppointmentId(data.getKey());
 
-                                // CHANGE HERE: Only proceed if status is "Approved"
-                                // We ignore "Visited" (already treated) and "Pending" (not yet approved)
+
                                 if ("Approved".equalsIgnoreCase(model.getStatus())) {
                                     fetchPatientNameAndAddToList(model);
                                 }
                             }
                         }
-                        // If no approved appointments are found, notify adapter to clear the view
+
                         if (!snapshot.exists()) {
                             adapter.notifyDataSetChanged();
                         }
@@ -197,71 +199,67 @@ public class DoctorAppointmentsFragment extends Fragment {
             View v = layout.getChildAt(i);
             if (v instanceof CheckBox && ((CheckBox) v).isChecked()) {
                 String serviceName = ((CheckBox) v).getContentDescription().toString();
+
                 double price = Double.parseDouble(v.getTag().toString());
                 newTestsTotal += price;
 
-                // Push each test as an individual history item
                 Map<String, Object> billItem = new HashMap<>();
                 billItem.put("serviceName", serviceName);
                 billItem.put("amount", price);
                 billItem.put("timestamp", ServerValue.TIMESTAMP);
+
+
                 billRef.push().setValue(billItem);
             }
         }
 
-        // Logic: Sync total bill and update totalDue with the sum of NEW tests
+
         calculateAndSyncTotalBill(patientId, appointmentId, newTestsTotal);
     }
 
     private void calculateAndSyncTotalBill(String patientId, String appointmentId, final double newTestsTotal) {
-        DatabaseReference billRef = FirebaseDatabase.getInstance().getReference("billings").child(patientId);
         DatabaseReference appRef = FirebaseDatabase.getInstance().getReference("appointments").child(appointmentId);
         DatabaseReference patientRef = FirebaseDatabase.getInstance().getReference("patients").child(patientId);
 
-        billRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        appRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // We use a final double array to allow updating the value inside the nested transaction
-                final double[] currentAppointmentTotal = {0.0};
 
-                for (DataSnapshot item : snapshot.getChildren()) {
-                    Double amount = item.child("amount").getValue(Double.class);
-                    if (amount != null) {
-                        currentAppointmentTotal[0] += amount;
-                    }
-                }
+                Double existingBaseFee = snapshot.child("totalBill").getValue(Double.class);
+                if (existingBaseFee == null) existingBaseFee = 0.0;
 
-                // 1. Update the specific appointment record
-                appRef.child("totalBill").setValue(currentAppointmentTotal[0]);
+
+                double finalAppointmentTotal = existingBaseFee + newTestsTotal;
+
+
+                appRef.child("totalBill").setValue(finalAppointmentTotal);
                 appRef.child("status").setValue("Visited");
 
-                // 2. UPDATE TOTAL DUE in the Patient Node
-                patientRef.child("totalDue").runTransaction(new com.google.firebase.database.Transaction.Handler() {
+
+                patientRef.child("totalDue").runTransaction(new Transaction.Handler() {
                     @NonNull
                     @Override
-                    public com.google.firebase.database.Transaction.Result doTransaction(@NonNull com.google.firebase.database.MutableData currentData) {
+                    public Transaction.Result doTransaction(@NonNull MutableData currentData) {
                         Double currentTotalDue = currentData.getValue(Double.class);
                         if (currentTotalDue == null) currentTotalDue = 0.0;
 
-                        // Increment global debt by the price of NEWly added tests
+
                         currentData.setValue(currentTotalDue + newTestsTotal);
-                        return com.google.firebase.database.Transaction.success(currentData);
+                        return Transaction.success(currentData);
                     }
 
                     @Override
-                    public void onComplete(com.google.firebase.database.DatabaseError error, boolean committed, DataSnapshot snapshot) {
-                        if (committed) {
-                            // Use the array index [0] to access the value here
-                            if (getContext() != null) {
-                                Toast.makeText(getContext(), "Visit Finished. Bill: ৳" + currentAppointmentTotal[0], Toast.LENGTH_SHORT).show();
-                            }
+                    public void onComplete(DatabaseError error, boolean committed, DataSnapshot snapshot) {
+                        if (committed && getContext() != null) {
+                            Toast.makeText(getContext(), "Visit Finished. Total: ৳" + finalAppointmentTotal, Toast.LENGTH_SHORT).show();
+                        } else if (error != null) {
+                            Log.e("FirebaseError", error.getMessage());
                         }
                     }
                 });
             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+            @Override public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
 }

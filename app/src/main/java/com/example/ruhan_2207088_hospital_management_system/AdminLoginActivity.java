@@ -11,17 +11,17 @@ import androidx.appcompat.app.AppCompatActivity;
 public class AdminLoginActivity extends AppCompatActivity {
 
     private EditText txtAdminId, txtAdminPass;
-    private Button btnAdminLogin, btnBack; // Added btnBack
+    private Button btnAdminLogin, btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.admin_login); // Ensure this matches your styled XML file name
+        setContentView(R.layout.admin_login);
 
         txtAdminId = findViewById(R.id.txtAdminId);
         txtAdminPass = findViewById(R.id.txtAdminPass);
         btnAdminLogin = findViewById(R.id.btnAdminLogin);
-        btnBack = findViewById(R.id.btnBack); // Initialize the back button
+        btnBack = findViewById(R.id.btnBack);
 
         // Login Logic
         btnAdminLogin.setOnClickListener(v -> {
@@ -38,7 +38,7 @@ public class AdminLoginActivity extends AppCompatActivity {
             }
         });
 
-        // FIXED: Back Button Logic
+
         btnBack.setOnClickListener(v -> {
             Intent intent = new Intent(AdminLoginActivity.this, MainActivity.class);
             startActivity(intent);

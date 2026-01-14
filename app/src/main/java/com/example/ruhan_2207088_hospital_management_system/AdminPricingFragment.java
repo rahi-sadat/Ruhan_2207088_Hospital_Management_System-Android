@@ -49,15 +49,14 @@ public class AdminPricingFragment extends Fragment {
             return;
         }
 
-        // Logic to match your database screenshot: Use a formatted name as the ID
-        // e.g., "Blood Test" becomes "blood_test"
+
         String id = name.toLowerCase().replace(" ", "_").replaceAll("[^a-z0-9_]", "");
 
         try {
-            // Convert input to a Number (Long) to match your database format
+
             long numericPrice = Long.parseLong(priceStr);
 
-            // Create object with numeric price
+
             Pricing p = new Pricing(id, name, numericPrice);
 
             dbRef.child(id).setValue(p).addOnSuccessListener(unused -> {
@@ -86,7 +85,7 @@ public class AdminPricingFragment extends Fragment {
                 if (snapshot.exists()) {
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         try {
-                            // Firebase maps the Number to the Object field in your Pricing model
+
                             Pricing p = ds.getValue(Pricing.class);
                             if (p != null) {
                                 p.serviceId = ds.getKey();

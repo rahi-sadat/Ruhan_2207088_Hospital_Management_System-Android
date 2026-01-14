@@ -57,10 +57,10 @@ public class DoctorLoginActivity extends AppCompatActivity {
 
                         Intent intent = new Intent(DoctorLoginActivity.this, DoctorDashboard.class);
 
-                        // CHANGE THIS: Match the key used in DoctorDashboard ("doctorId")
+
                         intent.putExtra("doctorId", loginId);
 
-                        // This matches the "name" field in your database
+
                         intent.putExtra("docName", snapshot.child("name").getValue(String.class));
 
                         startActivity(intent);

@@ -80,7 +80,7 @@ public class AddDoctorFragment extends Fragment {
                 doctorId = cleanName + "_" + lastThree;
             }
 
-            // Using "doctor" as the default password for new doctors
+
             Doctor doctorObj = new Doctor(doctorId, name, phone, spec, email, schedule, "doctor");
 
             mDatabase.child(doctorId).setValue(doctorObj)

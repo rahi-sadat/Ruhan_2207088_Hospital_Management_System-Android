@@ -50,7 +50,7 @@ public class PatientProfileFragment extends Fragment {
             }
         });
 
-        // 6. Initial data load
+
         loadPatientData();
 
         return view;
@@ -64,7 +64,7 @@ public class PatientProfileFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    // Mapping Firebase keys to TextViews
+
                     lblId.setText(patientId);
                     lblName.setText(snapshot.child("name").getValue(String.class));
                     lblPhone.setText(snapshot.child("phoneNumber").getValue(String.class));
@@ -80,13 +80,12 @@ public class PatientProfileFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                // Handle possible errors here
+
             }
         });
     }
 
-    // This ensures that when the user finishes editing and comes back,
-    // the profile screen updates with the new information immediately.
+
     @Override
     public void onResume() {
         super.onResume();

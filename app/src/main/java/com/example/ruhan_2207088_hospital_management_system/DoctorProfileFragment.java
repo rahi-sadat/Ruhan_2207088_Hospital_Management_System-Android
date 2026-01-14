@@ -24,18 +24,18 @@ public class DoctorProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_doctor_profile, container, false);
 
-        // 1. Get doctorId passed from DoctorDashboard
+
         if (getArguments() != null) {
             doctorId = getArguments().getString("doctorId");
         }
 
-        // 2. Initialize Views
+
         txtHeaderName = view.findViewById(R.id.txtDoctorName);
         txtHeaderSpecialty = view.findViewById(R.id.txtSpecialty);
         displayDocName = view.findViewById(R.id.editDocName);
         displayDocSpecialty = view.findViewById(R.id.editDocSpecialty);
 
-        // 3. Load Data from Firebase
+
         loadDoctorData();
 
         return view;
@@ -48,16 +48,16 @@ public class DoctorProfileFragment extends Fragment {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // isAdded() ensures we only update if the user is still looking at this fragment
+
                 if (snapshot.exists() && isAdded()) {
                     String name = snapshot.child("name").getValue(String.class);
                     String specialty = snapshot.child("specialization").getValue(String.class);
 
-                    // Update Top Card
+
                     txtHeaderName.setText(name);
                     txtHeaderSpecialty.setText(specialty);
 
-                    // Update Detail Fields
+
                     displayDocName.setText(name);
                     displayDocSpecialty.setText(specialty);
                 }

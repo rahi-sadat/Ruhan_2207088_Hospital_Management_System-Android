@@ -17,7 +17,7 @@ public class DoctorSelectAdapter extends RecyclerView.Adapter<DoctorSelectAdapte
     private OnDoctorClickListener listener;
     private int selectedPosition = -1;
 
-    // Interface to handle doctor selection in the Fragment
+
     public interface OnDoctorClickListener {
         void onDoctorClick(Doctor doctor);
     }
@@ -72,7 +72,7 @@ public class DoctorSelectAdapter extends RecyclerView.Adapter<DoctorSelectAdapte
         return doctorList != null ? doctorList.size() : 0;
     }
 
-    // SINGLE ViewHolder class containing all necessary views
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvDocName, tvDocSpec, tvDocPhone, tvDocSchedule;
         ImageButton btnEdit, btnDelete;

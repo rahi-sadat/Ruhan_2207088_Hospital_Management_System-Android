@@ -35,18 +35,18 @@ public class AppointmentApprovalAdapter extends RecyclerView.Adapter<Appointment
         holder.btnApprove.setOnClickListener(v -> {
             DatabaseReference pricingRef = FirebaseDatabase.getInstance().getReference("hospital_pricing");
 
-            // FIX: Match the lowercase name with underscores as seen in your Firebase screenshot
+
             pricingRef.child("doctor's_visit_fee").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     double fee = 0.0;
 
                     if (snapshot.exists()) {
-                        // Pull the 'price' field from the 'doctor's_visit_fee' node
+
                         Object priceObj = snapshot.child("price").getValue();
                         if (priceObj != null) {
                             try {
-                                // If it's stored as a Number or String, this converts it safely
+
                                 fee = Double.parseDouble(priceObj.toString());
                             } catch (NumberFormatException e) {
                                 fee = 0.0;
@@ -54,19 +54,19 @@ public class AppointmentApprovalAdapter extends RecyclerView.Adapter<Appointment
                         }
                     }
 
-                    // Update the appointment in the database
+
                     DatabaseReference appRef = FirebaseDatabase.getInstance().getReference("appointments")
                             .child(app.getAppointmentId());
 
                     Map<String, Object> updates = new HashMap<>();
                     updates.put("status", "Approved");
-                    updates.put("totalBill", fee);        // Now this will be 1000.0 instead of 0.0
+                    updates.put("totalBill", fee);
                     updates.put("paymentStatus", "Unpaid");
 
                     double finalFee = fee;
                     appRef.updateChildren(updates).addOnSuccessListener(aVoid -> {
                         Toast.makeText(v.getContext(), "Approved! Fee: " + finalFee + " TK", Toast.LENGTH_SHORT).show();
-                        // Optionally remove item from list or refresh
+
                     });
                 }
 
