@@ -17,8 +17,7 @@ A comprehensive Android application for managing hospital operations, patient re
 Rahi's Care Hospital is a full-featured Android application that streamlines hospital operations and improves patient care delivery. The system supports multiple user types (Patients, Doctors, and Admins) with tailored interfaces and functionalities for each role.
 
 **Last Updated**: January 14, 2026  
-**Target SDK**: Android 36  
-**Min SDK**: Android 24
+
 
 ## ✨ Features
 
@@ -290,19 +289,3 @@ The application requests the following permissions:
 
 This project is provided as-is for educational purposes.
 
-## 👨‍💼 Author
-
-**Student ID**: 2207088  
-**Repository**: [rahi-sadat/Ruhan_2207088_Hospital_Management_System-Android](https://github.com/rahi-sadat/Ruhan_2207088_Hospital_Management_System-Android)
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit issues or pull requests for improvements.
-
-## ❓ Support
-
-For questions, issues, or suggestions, please open an issue on the GitHub repository.
-
----
-
-**Last Updated**: April 2026
